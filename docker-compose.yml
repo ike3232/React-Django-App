@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./ComputexBackend
+    container_name: backendcontainer
+    ports:
+      - 8000:8000
+    depends_on:
+      - db    
+      
+  frontend:
+    build:
+      context: ./ComputexFrontend
+    container_name: frontendcontainer
+    ports:
+      - 3000:80
+    depends_on:
+      - backend
+    
+  db:
+    image: postgres:12.1-alpine
+    container_name: postgrescontainer
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=computex
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=12345
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+      
+  volumes:
+    postgres_data
